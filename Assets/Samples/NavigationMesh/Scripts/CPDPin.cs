@@ -1,54 +1,88 @@
 using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class CPDPin : MonoBehaviour
 {
+    [Header("Title")]
+    public TextMeshProUGUI title;
+
     [Header("Raycast")]
     public GraphicRaycaster raycaster;
     public EventSystem eventSystem;
 
-    [Header("CPD Path Canvas")]
+    [Header("Pins Father")]
+    public GameObject pinsFather;
+
+    [Header("Path Pin")]
+    public GameObject pinPrefab;
+    public TextMeshProUGUI txtPinCount;
+
+    [Header("CPD Pin")]
+    public Sprite pinCPD;
+
+    [Header("Buttons")]
+    public GameObject btnContinuar;
     public GameObject btnConluir;
-    public GameObject btnCPD;
-    public GameObject pinCPD;
 
     [SerializeField]
-    private bool CanPlacePin = false;
+    private int currentStep;
+
+    [SerializeField]
+    private float clickCooldown = 0.5f;
+
+    [Header("Pins Quantity")]
+    public int pinCount = 0;
 
     private void Start()
     {
         btnConluir.SetActive(false);
-        btnCPD.SetActive(true);
-        pinCPD.SetActive(false);
+        btnContinuar.SetActive(false);
+
+        currentStep = 0;
+        title.text = "Clique nas salas de interesse, (da porta de entrada até o CPD)";
     }
 
     private void FixedUpdate()
     {
         GameObject clicked = UIObjectUnderMouse();
 
+        clickCooldown -= Time.fixedDeltaTime;
+
 #if UNITY_EDITOR
-        if (CanPlacePin && Input.GetMouseButtonDown(0) && clicked != null && clicked.CompareTag("PinArea"))
+        if (clickCooldown <= 0f && Input.GetMouseButtonDown(0) && clicked != null)
         {
-            Debug.Log("Comparou");
-            pinCPD.SetActive(true);
-            pinCPD.transform.position = Input.mousePosition;
+            if (clicked.gameObject.CompareTag("PinArea") && currentStep == 0)
+            {
+                pinCount++;
+                Debug.Log("Pin Count: " + pinCount);
+                txtPinCount.text = pinCount.ToString();
+                Instantiate(pinPrefab, new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0), Quaternion.identity, pinPrefab.transform.parent);
+                pinPrefab.transform.SetParent(pinsFather.transform, worldPositionStays: true);
+                
+                if(btnContinuar.activeSelf == false)
+                {
+                    btnContinuar.SetActive(true);
+                }
+            }
+            else if (currentStep == 1 && clicked.gameObject.CompareTag("NullPin"))
+            {
+                clicked.gameObject.GetComponent<Image>().sprite = pinCPD;
+                clicked.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "CPD";
+                clicked.gameObject.tag = "Raycast Ignore";
+                currentStep = 2;
 
-            btnCPD.SetActive(false);
-            btnConluir.SetActive(true);
-            CanPlacePin = false;
-        }
-        else if (!clicked.CompareTag("PinArea"))
-        {
-            Debug.Log("Fora da Área");
-            return;
-        }
+                btnConluir.SetActive(true);
+            }
+            else
+            {
+                return;
+            }
 
-
-        if (pinCPD.activeSelf && Input.GetMouseButton(0))
-        {
-            pinCPD.transform.position = Input.mousePosition;
+            clickCooldown = 0.5f;
         }
 
 #else
@@ -71,19 +105,33 @@ public class CPDPin : MonoBehaviour
 
     private GameObject UIObjectUnderMouse()
     {
-        PointerEventData eventData = new PointerEventData(eventSystem);
-        eventData.position = Input.mousePosition;
-        List<RaycastResult> results = new List<RaycastResult>();
-        raycaster.Raycast(eventData, results);
+            PointerEventData eventData = new PointerEventData(eventSystem);
+            eventData.position = Input.mousePosition;
+            List<RaycastResult> results = new List<RaycastResult>();
+            raycaster.Raycast(eventData, results);
 
-        if (results.Count > 0)
-            return results[0].gameObject;
+        foreach (var r in results)
+        {
+            if (!r.gameObject.CompareTag("Raycast Ignore"))
+            {
+                return r.gameObject;
+            }
+        }
 
         return null;
     }
 
-    public void CPDInit()
+    public void Continue()
     {
-        CanPlacePin = true;
+        currentStep = 1;
+        btnContinuar.SetActive(false);
+        title.text = "Clique no pin do CPD";
+    }
+
+    public void Conclude()
+    {
+        CanvasManager canvasManager = FindFirstObjectByType<CanvasManager>();
+        canvasManager.panelPins.SetActive(true);
+        canvasManager.panelCPDPathYes.SetActive(false);
     }
 }

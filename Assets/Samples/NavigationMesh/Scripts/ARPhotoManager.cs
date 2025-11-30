@@ -7,21 +7,23 @@ using TMPro;
 public class ARPhotoManager : MonoBehaviour
 {
     [Header("UI Principal")]
-    public GameObject canvasCameraUI;
-    public GameObject canvasPreviewUI;
-    public GameObject iconStampPanel;
+    public TextMeshProUGUI title;
+    //public GameObject canvasCameraUI;
+    //public GameObject canvasPreviewUI;
+    //public GameObject iconStampPanel;
 
-    [Header("Tutorial")]
-    public GameObject canvasTutorialHand;
-    public Button tutorialOkButton;
+    //[Header("Tutorial")]
+    //public GameObject canvasTutorialHand;
+    //public Button tutorialOkButton;
 
     [Header("Preview da Foto")]
     public RawImage photoPreviewImage;
+    public RawImage mapPreviewImage;
     public Button buttonConfirm;
     public Button buttonBack;
 
-    [Header("Feedback")]
-    public TMP_Text feedbackText;
+    //[Header("Feedback")]
+    //public TMP_Text feedbackText;
 
     [Header("Configurações")]
     public int maxPhotosPerSession = 5;
@@ -30,21 +32,28 @@ public class ARPhotoManager : MonoBehaviour
     private Texture2D capturedTexture;
     private int photosSent = 0;
     private bool isCapturing = false;
+    private CanvasManager canvasManager;
 
-    [Header("Tela Final")]
-    public GameObject finalScreenCanvas;
+    //[Header("Tela Final")]
+    //public GameObject finalScreenCanvas;
 
     private void Start()
     {
-        canvasCameraUI.SetActive(true);
-        canvasPreviewUI.SetActive(false);
-        feedbackText.gameObject.SetActive(false);
+        //canvasCameraUI.SetActive(true);
+        //canvasPreviewUI.SetActive(false);
+        //feedbackText.gameObject.SetActive(false);
 
-        if (iconStampPanel != null)
-            iconStampPanel.SetActive(false);
+        //if (iconStampPanel != null)
+        //    iconStampPanel.SetActive(false);
 
-        if (canvasTutorialHand != null)
-            canvasTutorialHand.SetActive(false);
+        //if (canvasTutorialHand != null)
+        //    canvasTutorialHand.SetActive(false);
+
+        canvasManager = FindFirstObjectByType<CanvasManager>();
+        if (canvasManager.currentStep == 1)
+            title.text = "Tire foto da planta baixa";
+        else
+            title.text = "Tire foto do ambiente";
 
         buttonConfirm.onClick.AddListener(OnConfirmClicked);
         buttonBack.onClick.AddListener(OnBackClicked);
@@ -59,7 +68,7 @@ public class ARPhotoManager : MonoBehaviour
 
         if (photosSent >= maxPhotosPerSession)
         {
-            ShowFeedback("Limite de 5 fotos atingido!");
+            //ShowFeedback("Limite de 5 fotos atingido!");
             return;
         }
 
@@ -70,11 +79,19 @@ public class ARPhotoManager : MonoBehaviour
     {
         isCapturing = true;
 
-        canvasCameraUI.SetActive(false);
-        feedbackText.text = "Capturando...";
-        feedbackText.gameObject.SetActive(true);
+        //canvasCameraUI.SetActive(false);
+        //feedbackText.text = "Capturando...";
+        //feedbackText.gameObject.SetActive(true);
 
         yield return new WaitForEndOfFrame();
+
+        if(canvasManager.currentStep == 1)
+        {
+            canvasManager.panelPreview.SetActive(true);
+            canvasManager.panelMap.SetActive(true);
+        }
+        else
+            canvasManager.panelPreview.SetActive(true);
 
         int scaleFactor = 2;
         int width = Screen.width * scaleFactor;
@@ -102,31 +119,36 @@ public class ARPhotoManager : MonoBehaviour
 
         Texture2D previewTexture = ResizeTexture(capturedTexture, pw, ph);
 
-        photoPreviewImage.texture = previewTexture;
+        if (canvasManager.currentStep == 1)
+            mapPreviewImage.texture = previewTexture;
+        else
+            photoPreviewImage.texture = previewTexture;
 
-        canvasPreviewUI.SetActive(true);
-        feedbackText.gameObject.SetActive(false);
 
-        if (iconStampPanel != null)
-            iconStampPanel.SetActive(true);
 
-        TryShowTutorial();
+        //canvasPreviewUI.SetActive(true);
+        //feedbackText.gameObject.SetActive(false);
+
+        //if (iconStampPanel != null)
+        //    iconStampPanel.SetActive(true);
+
+        //TryShowTutorial();
         isCapturing = false;
     }
 
     // ================================================================
     // TUTORIAL
     // ================================================================
-    private void TryShowTutorial()
-    {
-        canvasTutorialHand.SetActive(true);
+    //private void TryShowTutorial()
+    //{
+    //    canvasTutorialHand.SetActive(true);
 
-        tutorialOkButton.onClick.RemoveAllListeners();
-        tutorialOkButton.onClick.AddListener(() =>
-        {
-            canvasTutorialHand.SetActive(false);
-        });
-    }
+    //    tutorialOkButton.onClick.RemoveAllListeners();
+    //    tutorialOkButton.onClick.AddListener(() =>
+    //    {
+    //        canvasTutorialHand.SetActive(false);
+    //    });
+    //}
 
     // ================================================================
     // CONFIRMAR FOTO → SALVAR 2 IMAGENS
@@ -138,7 +160,7 @@ public class ARPhotoManager : MonoBehaviour
         buttonConfirm.interactable = false;
         buttonBack.interactable = false;
 
-        ShowFeedback("📤 Preparando foto...");
+        //ShowFeedback("📤 Preparando foto...");
 
         StartCoroutine(SendBothPhotos());
     }
@@ -176,21 +198,21 @@ public class ARPhotoManager : MonoBehaviour
 
             while (!op.isDone)
             {
-                ShowFeedback(" Enviando... " + (int)(www.uploadProgress * 100) + "%");
+                //ShowFeedback(" Enviando... " + (int)(www.uploadProgress * 100) + "%");
                 yield return null;
             }
 
             if (www.result == UnityWebRequest.Result.Success)
             {
-                ShowFeedback(" Fotos enviadas com sucesso!");
+                //ShowFeedback(" Fotos enviadas com sucesso!");
                 photosSent++;
             }
             else
             {
-                ShowFeedback(" Erro ao enviar: " + www.error);
+                //ShowFeedback(" Erro ao enviar: " + www.error);
             }
 
-            finalScreenCanvas.SetActive(true);
+            //finalScreenCanvas.SetActive(true);
 
             buttonConfirm.interactable = true;
             buttonBack.interactable = true;
@@ -198,16 +220,18 @@ public class ARPhotoManager : MonoBehaviour
 
     }
 
-    
+
     private void OnBackClicked()
     {
-        canvasPreviewUI.SetActive(false);
-        canvasCameraUI.SetActive(true);
+        //canvasPreviewUI.SetActive(false);
+        //canvasCameraUI.SetActive(true);
 
-        if (iconStampPanel != null)
-            iconStampPanel.SetActive(false);
+        //if (iconStampPanel != null)
+        //    iconStampPanel.SetActive(false);
 
-        ShowFeedback("Foto descartada");
+        //ShowFeedback("Foto descartada");
+        
+        canvasManager.panelPreview.SetActive(false);
     }
 
 
@@ -229,20 +253,20 @@ public class ARPhotoManager : MonoBehaviour
     }
 
 
-    private void ShowFeedback(string msg)
-    {
-        feedbackText.text = msg;
-        feedbackText.gameObject.SetActive(true);
-        StartCoroutine(HideFeedback());
-    }
+    //private void ShowFeedback(string msg)
+    //{
+    //    feedbackText.text = msg;
+    //    feedbackText.gameObject.SetActive(true);
+    //    StartCoroutine(HideFeedback());
+    //}
 
 
 
-    private IEnumerator HideFeedback()
-    {
-        yield return new WaitForSeconds(2.2f);
-        feedbackText.gameObject.SetActive(false);
-    }
+    //private IEnumerator HideFeedback()
+    //{
+    //    yield return new WaitForSeconds(2.2f);
+    //    feedbackText.gameObject.SetActive(false);
+    //}
 
 
     private IEnumerator CapturePreviewCoroutine(System.Action<Texture2D> callback)
@@ -278,6 +302,12 @@ public class ARPhotoManager : MonoBehaviour
         cropped.Apply();
 
         callback?.Invoke(cropped);
+    }
+
+    public void Continue()
+    {
+        canvasManager.panelPreview.SetActive(false);
+        canvasManager.panelCPDPathYes.SetActive(true);
     }
 
 

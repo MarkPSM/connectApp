@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UIElements.Experimental;
 
 public class CanvasManager : MonoBehaviour
 {
@@ -12,11 +14,19 @@ public class CanvasManager : MonoBehaviour
     public GameObject panelPicture;
     public GameObject panelPreview;
     public GameObject panelPins;
+    public GameObject panelTutorial;
+    public GameObject panelSteps;
+    public GameObject panelProgress;
+    public GameObject panelMap;
 
     [Header("Buttons")]
     public GameObject btnChat;
+    public GameObject btnSteps;
 
     private ChatManagerIA chatManagerIA;
+
+    [Header("Steps")]
+    public int currentStep = 1;
 
     private void Start()
     {
@@ -29,9 +39,15 @@ public class CanvasManager : MonoBehaviour
         panelPicture.SetActive(false);
         panelPreview.SetActive(false);
         panelPins.SetActive(false);
+        panelTutorial.SetActive(false);
+        panelSteps.SetActive(false);
+        panelProgress.SetActive(false);
+        panelMap.SetActive(false);
 
         btnChat.SetActive(false);
-        ChatManagerIA chatManagerIA = FindFirstObjectByType<ChatManagerIA>();
+        btnSteps.SetActive(false);
+
+        chatManagerIA = FindFirstObjectByType<ChatManagerIA>();
     }
 
     public void ConfirmPermission()
@@ -46,18 +62,25 @@ public class CanvasManager : MonoBehaviour
 
         panelContinue.SetActive(true);
         btnChat.SetActive(true);
+        btnSteps.SetActive(true);
     }
 
     public void Continue()
     {
         panelContinue.SetActive(false);
-        panelBlueprint.SetActive(true);
+        panelPicture.SetActive(true);
     }
 
     public void OpenChat()
     {
         panelChat.SetActive(true);
         btnChat.gameObject.SetActive(false);
+        
+        if(panelSteps.activeSelf == true)
+        {
+            panelSteps.SetActive(false);
+            btnSteps.gameObject.SetActive(true);
+        }
     }
 
     public void CloseChat()
@@ -70,6 +93,24 @@ public class CanvasManager : MonoBehaviour
         panelChat.SetActive(false);
     }
 
+    public void OpenSteps()
+    {
+        panelSteps.SetActive(true);
+        btnSteps.gameObject.SetActive(false);
+
+        if (panelChat.activeSelf == true)
+        {
+            panelChat.SetActive(false);
+            btnChat.gameObject.SetActive(true);
+        }
+    }
+
+    public void CloseSteps()
+    {
+        btnSteps.gameObject.SetActive(true);
+        panelSteps.SetActive(false);
+    }
+
     public void No()
     {
         Debug.Log("Continue without blueprint");
@@ -78,6 +119,12 @@ public class CanvasManager : MonoBehaviour
     public void Yes()
     {
         Debug.Log("Continue with blueprint");
-        panelCPDPathYes.SetActive(true);
+        panelPicture.SetActive(true);
+    }
+
+    public void SkipTutorial()
+    {
+        panelTutorial.SetActive(false);
+        panelPicture.SetActive(true);
     }
 }
