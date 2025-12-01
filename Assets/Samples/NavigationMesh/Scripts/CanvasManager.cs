@@ -18,6 +18,7 @@ public class CanvasManager : MonoBehaviour
     public GameObject panelSteps;
     public GameObject panelProgress;
     public GameObject panelMap;
+    public GameObject panelMeasure;
 
     [Header("Buttons")]
     public GameObject btnChat;
@@ -43,6 +44,7 @@ public class CanvasManager : MonoBehaviour
         panelSteps.SetActive(false);
         panelProgress.SetActive(false);
         panelMap.SetActive(false);
+        panelMeasure.SetActive(false);
 
         btnChat.SetActive(false);
         btnSteps.SetActive(false);

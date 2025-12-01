@@ -35,6 +35,7 @@ public class MeasureScript : MonoBehaviour
     public float distance;
     public List<float> distances = new List<float>();
 
+
     void Start()
     {
         line = gameObject.AddComponent<LineRenderer>();
@@ -230,33 +231,48 @@ public class MeasureScript : MonoBehaviour
 
     public void SendMeasures()
     {
-        canMeasure = false;
+        CPDPin pinsPath = FindFirstObjectByType<CPDPin>();
+        CanvasManager canvasManager = FindFirstObjectByType<CanvasManager>();
+        int i = 1;
 
-        if (distances.Count == 0) return;
+        if (i <= pinsPath.pinCount)
+        {
+            i++;
+
+            canMeasure = false;
+
+            if (distances.Count == 0) return;
         
-        if(distances.Count == 1)
-        {
-            Debug.Log($"Only one measurement: {distances[0]:F2}m (Height)");
-            distance = distances[0];
-            canMeasure = true;
-            ReloadMeasures();
-            return;
-        }
-        else if(distances.Count == 2)
-        {
-            float height = Mathf.Max(distances[0], distances[1]);
-            Debug.Log($"Two measurements: {distances[0]:F2}m, {distances[1]:F2}m (Area)");
-            float area = distances[0] * distances[1];
-            Debug.Log($"Calculated area: {area:F2}m²");
-            canMeasure = true;
-            ReloadMeasures();
-            return;
+            if(distances.Count == 1)
+            {
+                Debug.Log($"Only one measurement: {distances[0]:F2}m (Height)");
+                distance = distances[0];
+                canMeasure = true;
+                ReloadMeasures();
+                return;
+            }
+            else if(distances.Count == 3)
+            {
+                float height = Mathf.Max(distances[0], distances[1]);
+                Debug.Log($"Two measurements: {distances[0]:F2}m, {distances[1]:F2}m (Area)");
+                float area = distances[0] * distances[1];
+                Debug.Log($"Calculated area: {area:F2}m²");
+                canMeasure = true;
+                ReloadMeasures();
+                return;
+            }
+            else
+            {
+                Debug.Log("Multiple measurements detected. Concluding with the first two only.");
+                ReloadMeasures();
+                return;
+            }
         }
         else
         {
-            Debug.Log("Multiple measurements detected. Concluding with the first two only.");
+            canvasManager.panelMeasure.SetActive(false);
+            canMeasure = true;
             ReloadMeasures();
-            return;
         }
 
     }

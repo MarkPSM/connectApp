@@ -169,9 +169,6 @@ public class RisksPin : MonoBehaviour
     public void Concluir()
     {
         CanvasManager canvasManager = FindFirstObjectByType<CanvasManager>();
-        canvasManager.currentStep = 2;
-        canvasManager.panelTutorial.SetActive(true);
-        canvasManager.OpenSteps();
-        canvasManager.panelPins.SetActive(false);
+        canvasManager.panelProgress.SetActive(true);
     }
 }
