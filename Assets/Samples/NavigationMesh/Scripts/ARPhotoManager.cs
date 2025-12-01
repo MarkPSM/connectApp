@@ -50,13 +50,17 @@ public class ARPhotoManager : MonoBehaviour
         //    canvasTutorialHand.SetActive(false);
 
         canvasManager = FindFirstObjectByType<CanvasManager>();
+
+        buttonConfirm.onClick.AddListener(OnConfirmClicked);
+        buttonBack.onClick.AddListener(OnBackClicked);
+    }
+
+    private void FixedUpdate()
+    {
         if (canvasManager.currentStep == 1)
             title.text = "Tire foto da planta baixa";
         else
             title.text = "Tire foto do ambiente";
-
-        buttonConfirm.onClick.AddListener(OnConfirmClicked);
-        buttonBack.onClick.AddListener(OnBackClicked);
     }
 
     // ================================================================
@@ -306,9 +310,17 @@ public class ARPhotoManager : MonoBehaviour
 
     public void Continue()
     {
-        canvasManager.panelPreview.SetActive(false);
-        canvasManager.panelCPDPathYes.SetActive(true);
-    }
+        if (canvasManager.currentStep == 1)
+        { 
+            canvasManager.panelPreview.SetActive(false);
+            canvasManager.panelCPDPathYes.SetActive(true);
 
+        }
+        else
+        {
+            canvasManager.panelPreview.SetActive(false);
+            canvasManager.panelMeasure.SetActive(true);
+        }       
+    }
 
 }

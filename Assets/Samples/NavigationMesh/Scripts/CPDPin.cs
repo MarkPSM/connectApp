@@ -132,6 +132,7 @@ public class CPDPin : MonoBehaviour
     {
         CanvasManager canvasManager = FindFirstObjectByType<CanvasManager>();
         canvasManager.panelPins.SetActive(true);
+        canvasManager.panelProgress.SetActive(true);
         canvasManager.panelCPDPathYes.SetActive(false);
     }
 }
