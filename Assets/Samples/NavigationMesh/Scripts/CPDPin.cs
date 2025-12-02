@@ -86,20 +86,33 @@ public class CPDPin : MonoBehaviour
         }
 
 #else
-        if (CanPlacePin && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began && clicked != mull && clicked.CompareTag("PinArea")
+        if (clickCooldown <= 0f && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began && clicked != null && clicked.CompareTag("PinArea") && currentStep == 0)
         {
-            pinCPD.SetActive(true);
-            pinCPD.transform.position = Input.GetTouch(0).position;
-
-            btnCPD.SetActive(false);
-            btnConluir.SetActive(true);
-            CanPlacePin = false;
+            pinCount++;
+                Debug.Log("Pin Count: " + pinCount);
+                txtPinCount.text = pinCount.ToString();
+                Instantiate(pinPrefab, new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0), Quaternion.identity, pinPrefab.transform.parent);
+                pinPrefab.transform.SetParent(pinsFather.transform, worldPositionStays: true);
+                
+                if(btnContinuar.activeSelf == false)
+                {
+                    btnContinuar.SetActive(true);
+                }
         }
-
-        if(pinCPD.activeSelf && Input.touchCount > 0 && (Input.GetTouch(0).phase == TouchPhase.Moved || Input.GetTouch(0).phase == TouchPhase.Stationary))
+        else if (currentStep == 1 && clicked.gameObject.CompareTag("NullPin"))
         {
-            pinCPD.transform.position = Input.GetTouch(0).position;
+         clicked.gameObject.GetComponent<Image>().sprite = pinCPD;
+                clicked.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "CPD";
+                clicked.gameObject.tag = "Raycast Ignore";
+                currentStep = 2;
+
+                btnConluir.SetActive(true);
         }
+        else {
+                    return;
+        }
+        clickCooldown = 0.5f;
+
 #endif
     }
 

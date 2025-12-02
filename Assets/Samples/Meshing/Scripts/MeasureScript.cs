@@ -35,6 +35,8 @@ public class MeasureScript : MonoBehaviour
     public float distance;
     public List<float> distances = new List<float>();
 
+    private int i = 1;
+
 
     void Start()
     {
@@ -231,13 +233,20 @@ public class MeasureScript : MonoBehaviour
 
     public void SendMeasures()
     {
-        CPDPin pinsPath = FindFirstObjectByType<CPDPin>();
-        CanvasManager canvasManager = FindFirstObjectByType<CanvasManager>();
-        int i = 1;
+            CPDPin pinsPath = FindFirstObjectByType<CPDPin>();
+            CanvasManager canvasManager = FindFirstObjectByType<CanvasManager>();
 
-        if (i <= pinsPath.pinCount)
-        {
-            i++;
+            if (i < pinsPath.pinCount)
+            {
+                i++;
+                canvasManager.panelMeasure.SetActive(false);
+                canvasManager.panelPicture.SetActive(true);
+            }
+            else
+            {
+                canvasManager.panelMeasure.SetActive(false);
+                canvasManager.panelProgress.SetActive(true);
+            }
 
             canMeasure = false;
 
@@ -249,7 +258,7 @@ public class MeasureScript : MonoBehaviour
                 distance = distances[0];
                 canMeasure = true;
                 ReloadMeasures();
-                return;
+            return;
             }
             else if(distances.Count == 3)
             {
@@ -267,14 +276,6 @@ public class MeasureScript : MonoBehaviour
                 ReloadMeasures();
                 return;
             }
-        }
-        else
-        {
-            canvasManager.panelMeasure.SetActive(false);
-            canMeasure = true;
-            ReloadMeasures();
-        }
-
     }
 
 }

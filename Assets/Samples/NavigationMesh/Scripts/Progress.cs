@@ -26,7 +26,7 @@ public class Progress : MonoBehaviour
             canvasManager.panelCPDPathYes.SetActive(true);
             canvasManager.currentStep++;
             canvasManager.panelProgress.SetActive(false);
-            Debug.Log("Estágio atual: " + canvasManager.currentStep);
+            Debug.Log("Estágio atual: " + canvasManager.currentStep + "; CPD Path activated");
             return;
         }
         else if(canvasManager.currentStep == 2)
@@ -34,16 +34,18 @@ public class Progress : MonoBehaviour
             canvasManager.panelTutorial.SetActive(true);
             canvasManager.panelMap.SetActive(false);
             canvasManager.panelPins.SetActive(false);
+            canvasManager.panelCPDPathYes.SetActive(false);
             canvasManager.currentStep++;
             canvasManager.panelProgress.SetActive(false);
-            Debug.Log("Estágio atual: " + canvasManager.currentStep);
+            Debug.Log("Estágio atual: " + canvasManager.currentStep + "; Picture Area activated");
             return;
         }
         else if(canvasManager.currentStep == 3)
         {
             canvasManager.currentStep++;
             canvasManager.panelProgress.SetActive(false);
-            Debug.Log("Estágio atual: " + canvasManager.currentStep);
+            canvasManager.panelEnd.SetActive(true);
+            Debug.Log("Estágio atual: " + canvasManager.currentStep + "; End activated");
             return;
         }
         else

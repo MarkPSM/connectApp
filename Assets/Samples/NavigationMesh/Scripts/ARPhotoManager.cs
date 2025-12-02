@@ -61,6 +61,12 @@ public class ARPhotoManager : MonoBehaviour
             title.text = "Tire foto da planta baixa";
         else
             title.text = "Tire foto do ambiente";
+
+        if (buttonConfirm.interactable == false || buttonBack.interactable == false)
+        {
+            buttonConfirm.interactable = true;
+            buttonBack.interactable = true;
+        }
     }
 
     // ================================================================
@@ -313,12 +319,14 @@ public class ARPhotoManager : MonoBehaviour
         if (canvasManager.currentStep == 1)
         { 
             canvasManager.panelPreview.SetActive(false);
+            canvasManager.panelPicture.SetActive(false);
             canvasManager.panelCPDPathYes.SetActive(true);
 
         }
         else
         {
             canvasManager.panelPreview.SetActive(false);
+            canvasManager.panelPicture.SetActive(false);
             canvasManager.panelMeasure.SetActive(true);
         }       
     }
