@@ -1,8 +1,8 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
-using UnityEngine.XR.ARSubsystems;
 
 public class MeasureScript : MonoBehaviour
 {
@@ -71,6 +71,8 @@ public class MeasureScript : MonoBehaviour
             {
                 OnTouch(hit.point);
             }
+
+            StartCoroutine(MeasurementControl());
         }
 #else
     if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
@@ -88,6 +90,7 @@ public class MeasureScript : MonoBehaviour
     Pose hitPose = hits[0].pose;
     OnTouch(hitPose.position);
 }
+StartCoroutine(MeasurementControl());
     }
 #endif
 
@@ -207,7 +210,6 @@ public class MeasureScript : MonoBehaviour
                 Debug.Log("Failed to destroy dot");
         }
 
-        dots.Clear();
 
         line.positionCount = 0;
 
@@ -220,15 +222,16 @@ public class MeasureScript : MonoBehaviour
             else
                 Debug.Log("Failed to destroy measure text");
         }
-        measureTexts.Clear();
         btnReload.SetActive(false);
         header.SetActive(true);
         footer.SetActive(false);
 
+        measureTexts.Clear();
         distances.Clear();
+        dots.Clear();
         distance = 0f;
-
-        canMeasure = true;
+        
+        StartCoroutine(MeasurementControl());
     }
 
     public void SendMeasures()
@@ -276,6 +279,13 @@ public class MeasureScript : MonoBehaviour
                 ReloadMeasures();
                 return;
             }
+    }
+
+    private IEnumerator MeasurementControl()
+    {
+        canMeasure = false;
+        yield return new WaitForSeconds(0.5f);
+        canMeasure = true;
     }
 
 }
