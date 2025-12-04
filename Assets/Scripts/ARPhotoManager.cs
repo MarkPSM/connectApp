@@ -316,19 +316,25 @@ public class ARPhotoManager : MonoBehaviour
 
     public void Continue()
     {
-        if (canvasManager.currentStep == 1)
+        if (canvasManager.currentStep == 1 && canvasManager.hasBlueprint == true)
         { 
             canvasManager.panelPreview.SetActive(false);
             canvasManager.panelPicture.SetActive(false);
             canvasManager.panelCPDPathYes.SetActive(true);
 
         }
-        else
+        else if (canvasManager.hasBlueprint == true && canvasManager.currentStep != 1)
         {
             canvasManager.panelPreview.SetActive(false);
             canvasManager.panelPicture.SetActive(false);
             canvasManager.panelMeasure.SetActive(true);
-        }       
+        }
+        else if (canvasManager.hasBlueprint == false)
+        {
+            canvasManager.panelPreview.SetActive(false);
+            canvasManager.panelPicture.SetActive(false);
+            canvasManager.panelMeasure.SetActive(true);
+        }
     }
 
 }

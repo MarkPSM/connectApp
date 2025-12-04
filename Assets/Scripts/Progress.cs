@@ -21,7 +21,7 @@ public class Progress : MonoBehaviour
     {
         canvasManager.OpenSteps();
 
-        if(canvasManager.currentStep == 1)
+        if(canvasManager.currentStep == 1 && canvasManager.hasBlueprint == true)
         {
             canvasManager.panelCPDPathYes.SetActive(true);
             canvasManager.currentStep++;
@@ -29,7 +29,15 @@ public class Progress : MonoBehaviour
             Debug.Log("Estágio atual: " + canvasManager.currentStep + "; CPD Path activated");
             return;
         }
-        else if(canvasManager.currentStep == 2)
+        else if (canvasManager.currentStep == 1 && canvasManager.hasBlueprint == false)
+        {
+            canvasManager.panelTutorial.SetActive(true);
+            canvasManager.currentStep++;
+            canvasManager.panelProgress.SetActive(false);
+            Debug.Log("Estágio atual: " + canvasManager.currentStep + "; CPD Path activated");
+            return;
+        }
+        else if(canvasManager.currentStep == 2 && canvasManager.hasBlueprint == true)
         {
             canvasManager.panelTutorial.SetActive(true);
             canvasManager.panelMap.SetActive(false);
@@ -40,12 +48,32 @@ public class Progress : MonoBehaviour
             Debug.Log("Estágio atual: " + canvasManager.currentStep + "; Picture Area activated");
             return;
         }
-        else if(canvasManager.currentStep == 3)
+        else if (canvasManager.currentStep == 2 && canvasManager.hasBlueprint == false)
+        {
+            canvasManager.panelRisksNB.SetActive(true);
+            canvasManager.panelPicture.SetActive(false);
+            canvasManager.panelPreview.SetActive(false);
+            canvasManager.panelMeasure.SetActive(false);
+            canvasManager.currentStep++;
+            canvasManager.panelProgress.SetActive(false);
+            Debug.Log("Estágio atual: " + canvasManager.currentStep + "; Picture Area activated");
+            return;
+        }
+        else if(canvasManager.currentStep == 3 && canvasManager.hasBlueprint == true)
         {
             canvasManager.currentStep++;
             canvasManager.panelProgress.SetActive(false);
             canvasManager.panelEnd.SetActive(true);
             Debug.Log("Estágio atual: " + canvasManager.currentStep + "; End activated");
+            return;
+        }
+        else if (canvasManager.currentStep == 3 && canvasManager.hasBlueprint == false)
+        {
+            canvasManager.panelEnd.SetActive(true);
+            canvasManager.panelFilter.SetActive(false);
+            canvasManager.currentStep++;
+            canvasManager.panelProgress.SetActive(false);
+            Debug.Log("Estágio atual: " + canvasManager.currentStep + "; Picture Area activated");
             return;
         }
         else

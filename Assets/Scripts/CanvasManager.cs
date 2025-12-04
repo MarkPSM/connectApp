@@ -20,6 +20,9 @@ public class CanvasManager : MonoBehaviour
     public GameObject panelMap;
     public GameObject panelMeasure;
     public GameObject panelEnd;
+    public GameObject panelRoomNum;
+    public GameObject panelFilter;
+    public GameObject panelRisksNB;
 
     [Header("Buttons")]
     public GameObject btnChat;
@@ -29,6 +32,9 @@ public class CanvasManager : MonoBehaviour
 
     [Header("Steps")]
     public int currentStep = 1;
+
+    [Header("Blueprint")]
+    public bool hasBlueprint;
 
     private void Start()
     {
@@ -47,6 +53,9 @@ public class CanvasManager : MonoBehaviour
         panelMap.SetActive(false);
         panelMeasure.SetActive(false);
         panelEnd.SetActive(false);
+        panelRoomNum.SetActive(false);
+        panelFilter.SetActive(false);
+        panelRisksNB.SetActive(false);
 
         btnChat.SetActive(false);
         btnSteps.SetActive(false);
@@ -72,7 +81,7 @@ public class CanvasManager : MonoBehaviour
     public void Continue()
     {
         panelContinue.SetActive(false);
-        panelPicture.SetActive(true);
+        panelBlueprint.SetActive(true);
     }
 
     public void OpenChat()
@@ -115,14 +124,17 @@ public class CanvasManager : MonoBehaviour
         panelSteps.SetActive(false);
     }
 
-    public void No()
+    public void No ()
     {
         Debug.Log("Continue without blueprint");
+        hasBlueprint = false;
+        panelRoomNum.SetActive(true);
     }
 
     public void Yes()
     {
         Debug.Log("Continue with blueprint");
+        hasBlueprint = true;
         panelPicture.SetActive(true);
     }
 
@@ -135,5 +147,11 @@ public class CanvasManager : MonoBehaviour
     public void Fechar()
     {
         Application.Quit();
+    }
+
+    public void FilterOK()
+    {
+        panelFilter.SetActive(false);
+        panelProgress.SetActive(true);
     }
 }

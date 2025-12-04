@@ -234,8 +234,11 @@ public class MeasureScript : MonoBehaviour
     public void SendMeasures()
     {
             CPDPin pinsPath = FindFirstObjectByType<CPDPin>();
+            PanelRoomNum panelRoomNum = FindFirstObjectByType<PanelRoomNum>();
             CanvasManager canvasManager = FindFirstObjectByType<CanvasManager>();
-
+        
+        if(canvasManager.hasBlueprint == true)
+        {
             if (i < pinsPath.pinCount)
             {
                 i++;
@@ -247,6 +250,21 @@ public class MeasureScript : MonoBehaviour
                 canvasManager.panelMeasure.SetActive(false);
                 canvasManager.panelProgress.SetActive(true);
             }
+        }
+        else
+        {
+            if (i < panelRoomNum.roomNum)
+            {
+                i++;
+                canvasManager.panelMeasure.SetActive(false);
+                canvasManager.panelPicture.SetActive(true);
+            }
+            else
+            {
+                canvasManager.panelMeasure.SetActive(false);
+                canvasManager.panelProgress.SetActive(true);
+            }
+        }
 
             canMeasure = false;
 

@@ -36,7 +36,6 @@ public class RisksPin : MonoBehaviour
     [SerializeField]
     private bool canPlacePins;
     private Sprite actualPin;
-    private Animator animator;
 
     private void Start()
     {
