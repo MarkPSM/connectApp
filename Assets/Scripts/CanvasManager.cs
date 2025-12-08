@@ -7,6 +7,7 @@ public class CanvasManager : MonoBehaviour
     [Header("Panels")]
     public GameObject panelAuthorization;
     public GameObject panelPlay;
+    public GameObject panelRegister;
     public GameObject panelContinue;
     public GameObject panelBlueprint;
     public GameObject panelCPDPathYes;
@@ -15,6 +16,7 @@ public class CanvasManager : MonoBehaviour
     public GameObject panelPreview;
     public GameObject panelPins;
     public GameObject panelTutorial;
+    public GameObject panelPinsTutorial;
     public GameObject panelSteps;
     public GameObject panelProgress;
     public GameObject panelMap;
@@ -56,6 +58,8 @@ public class CanvasManager : MonoBehaviour
         panelRoomNum.SetActive(false);
         panelFilter.SetActive(false);
         panelRisksNB.SetActive(false);
+        panelPinsTutorial.SetActive(false);
+        panelRegister.SetActive(false);
 
         btnChat.SetActive(false);
         btnSteps.SetActive(false);
@@ -127,6 +131,7 @@ public class CanvasManager : MonoBehaviour
     public void No ()
     {
         Debug.Log("Continue without blueprint");
+        panelBlueprint.SetActive(false);
         hasBlueprint = false;
         panelRoomNum.SetActive(true);
     }
@@ -135,6 +140,7 @@ public class CanvasManager : MonoBehaviour
     {
         Debug.Log("Continue with blueprint");
         hasBlueprint = true;
+        panelBlueprint.SetActive(false);
         panelPicture.SetActive(true);
     }
 

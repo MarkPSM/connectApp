@@ -9,7 +9,10 @@ public class RisksPin : MonoBehaviour
     public GraphicRaycaster raycaster;
     public EventSystem eventSystem;
 
-    [Header("Risks Pins")]
+    [Header("Pins Father")]
+    public GameObject pinsFather;
+
+    [Header("Risk Pins Sprites")]
     public Sprite pinHeat;
     public Sprite pinCold;
     public Sprite pinPest;
@@ -21,7 +24,11 @@ public class RisksPin : MonoBehaviour
     public Sprite pinChemestry;
     public Sprite pinHumidity;
 
-    [Header("Risks Cards")]
+    [SerializeField]
+    private bool canPlacePins;
+    private Sprite actualPin;
+
+    [Header("Risk Cards")]
     public GameObject cardHeat;
     public GameObject cardCold;
     public GameObject cardPest;
@@ -32,10 +39,6 @@ public class RisksPin : MonoBehaviour
     public GameObject cardRoom;
     public GameObject cardChemestry;
     public GameObject cardHumidity;
-
-    [SerializeField]
-    private bool canPlacePins;
-    private Sprite actualPin;
 
     private void Start()
     {
@@ -49,6 +52,11 @@ public class RisksPin : MonoBehaviour
         cardRoom.SetActive(false);
         cardChemestry.SetActive(false);
         cardHumidity.SetActive(false);
+
+        pinsFather.SetActive(true);
+
+        CanvasManager canvasManager = FindFirstObjectByType<CanvasManager>();
+        canvasManager.panelPinsTutorial.SetActive(true);
     }
 
     private void FixedUpdate()
@@ -85,6 +93,8 @@ public class RisksPin : MonoBehaviour
         actualPin = pinHeat;
         cardHeat.SetActive(true);
         canPlacePins = true;
+
+        pinsFather.SetActive(false);
     }
 
     public void SelectColdPin()
@@ -92,6 +102,8 @@ public class RisksPin : MonoBehaviour
         actualPin = pinCold;
         cardCold.SetActive(true);
         canPlacePins = true;
+
+        pinsFather.SetActive(false);
     }
 
     public void SelectPestPin()
@@ -99,6 +111,8 @@ public class RisksPin : MonoBehaviour
         actualPin = pinPest;
         cardPest.SetActive(true);
         canPlacePins = true;
+
+        pinsFather.SetActive(false);
     }
 
     public void SelectInfraPin()
@@ -106,6 +120,8 @@ public class RisksPin : MonoBehaviour
         actualPin = pinInfra;
         cardInfra.SetActive(true);
         canPlacePins = true;
+
+        pinsFather.SetActive(false);
     }
 
     public void SelectNaturePin()
@@ -113,6 +129,8 @@ public class RisksPin : MonoBehaviour
         actualPin = pinNature;
         cardNature.SetActive(true);
         canPlacePins = true;
+
+        pinsFather.SetActive(false);
     }
 
     public void SelectMagneticPin()
@@ -120,6 +138,8 @@ public class RisksPin : MonoBehaviour
         actualPin = pinMagnetic;
         cardMagnetic.SetActive(true);
         canPlacePins = true;
+
+        pinsFather.SetActive(false);
     }
 
     public void SelectFallPin()
@@ -127,6 +147,8 @@ public class RisksPin : MonoBehaviour
         actualPin = pinFall;
         cardFall.SetActive(true);
         canPlacePins = true;
+
+        pinsFather.SetActive(false);
     }
 
     public void SelectRoomPin()
@@ -134,6 +156,8 @@ public class RisksPin : MonoBehaviour
         actualPin = pinRoom;
         cardRoom.SetActive(true);
         canPlacePins = true;
+
+        pinsFather.SetActive(false);
     }
 
     public void SelectChemestryPin()
@@ -141,6 +165,8 @@ public class RisksPin : MonoBehaviour
         actualPin = pinChemestry;
         cardChemestry.SetActive(true);
         canPlacePins = true;
+
+        pinsFather.SetActive(false);
     }
 
     public void SelectHumidityPin()
@@ -148,6 +174,8 @@ public class RisksPin : MonoBehaviour
         actualPin = pinHumidity;
         cardHumidity.SetActive(true);
         canPlacePins = true;
+
+        pinsFather.SetActive(false);
     }
 
     public void CloseCards()
@@ -163,6 +191,14 @@ public class RisksPin : MonoBehaviour
         cardChemestry.SetActive(false);
         cardHumidity.SetActive(false);
         canPlacePins = false;
+
+        pinsFather.SetActive(true);
+    }
+
+    public void CloseTutorial()
+    {
+        CanvasManager canvasManager = FindFirstObjectByType<CanvasManager>();
+        canvasManager.panelPinsTutorial.SetActive(false);
     }
 
     public void Concluir()

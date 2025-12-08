@@ -251,7 +251,7 @@ public class MeasureScript : MonoBehaviour
                 canvasManager.panelProgress.SetActive(true);
             }
         }
-        else
+        else if (canvasManager.hasBlueprint == false)
         {
             if (i < panelRoomNum.roomNum)
             {

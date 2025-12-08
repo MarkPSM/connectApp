@@ -34,6 +34,7 @@ public class Progress : MonoBehaviour
             canvasManager.panelTutorial.SetActive(true);
             canvasManager.currentStep++;
             canvasManager.panelProgress.SetActive(false);
+            canvasManager.panelBlueprint.SetActive(false);
             Debug.Log("Estágio atual: " + canvasManager.currentStep + "; CPD Path activated");
             return;
         }
