@@ -16,7 +16,6 @@ public class CanvasManager : MonoBehaviour
     public GameObject panelPreview;
     public GameObject panelPins;
     public GameObject panelTutorial;
-    public GameObject panelPinsTutorial;
     public GameObject panelSteps;
     public GameObject panelProgress;
     public GameObject panelMap;
@@ -58,7 +57,6 @@ public class CanvasManager : MonoBehaviour
         panelRoomNum.SetActive(false);
         panelFilter.SetActive(false);
         panelRisksNB.SetActive(false);
-        panelPinsTutorial.SetActive(false);
         panelRegister.SetActive(false);
 
         btnChat.SetActive(false);

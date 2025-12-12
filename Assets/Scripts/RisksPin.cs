@@ -54,9 +54,6 @@ public class RisksPin : MonoBehaviour
         cardHumidity.SetActive(false);
 
         pinsFather.SetActive(true);
-
-        CanvasManager canvasManager = FindFirstObjectByType<CanvasManager>();
-        canvasManager.panelPinsTutorial.SetActive(true);
     }
 
     private void FixedUpdate()
@@ -193,12 +190,6 @@ public class RisksPin : MonoBehaviour
         canPlacePins = false;
 
         pinsFather.SetActive(true);
-    }
-
-    public void CloseTutorial()
-    {
-        CanvasManager canvasManager = FindFirstObjectByType<CanvasManager>();
-        canvasManager.panelPinsTutorial.SetActive(false);
     }
 
     public void Concluir()
