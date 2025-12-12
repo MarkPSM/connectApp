@@ -27,7 +27,11 @@ public class CanvasManager : MonoBehaviour
 
     [Header("Buttons")]
     public GameObject btnChat;
+    public GameObject bgChat;
+    public GameObject bgChatSelected;
     public GameObject btnSteps;
+    public GameObject bgSteps;
+    public GameObject bgStepsSelected;
 
     private ChatManagerIA chatManagerIA;
 
@@ -62,6 +66,9 @@ public class CanvasManager : MonoBehaviour
         btnChat.SetActive(false);
         btnSteps.SetActive(false);
 
+        bgChatSelected.SetActive(false);
+        bgStepsSelected.SetActive(false);
+
         chatManagerIA = FindFirstObjectByType<ChatManagerIA>();
     }
 
@@ -74,10 +81,13 @@ public class CanvasManager : MonoBehaviour
     public void Play()
     {
         panelPlay.SetActive(false);
+        panelRegister.SetActive(true);
+    }
 
+    public void Register()
+    {
+        panelRegister.SetActive(false);
         panelContinue.SetActive(true);
-        btnChat.SetActive(true);
-        btnSteps.SetActive(true);
     }
 
     public void Continue()
@@ -89,13 +99,9 @@ public class CanvasManager : MonoBehaviour
     public void OpenChat()
     {
         panelChat.SetActive(true);
-        btnChat.gameObject.SetActive(false);
-        
-        if(panelSteps.activeSelf == true)
-        {
-            panelSteps.SetActive(false);
-            btnSteps.gameObject.SetActive(true);
-        }
+
+        bgChat.SetActive(false);
+        bgChatSelected.SetActive(true);
     }
 
     public void CloseChat()
@@ -104,29 +110,29 @@ public class CanvasManager : MonoBehaviour
         {
             chatManagerIA.ApagarMensagens();
         }
-        btnChat.gameObject.SetActive(true);
+
+        bgChat.SetActive(true);
+        bgChatSelected.SetActive(false);
         panelChat.SetActive(false);
     }
 
     public void OpenSteps()
     {
         panelSteps.SetActive(true);
-        btnSteps.gameObject.SetActive(false);
 
-        if (panelChat.activeSelf == true)
-        {
-            panelChat.SetActive(false);
-            btnChat.gameObject.SetActive(true);
-        }
+        bgSteps.SetActive(false);
+        bgStepsSelected.SetActive(true);
     }
 
     public void CloseSteps()
     {
-        btnSteps.gameObject.SetActive(true);
         panelSteps.SetActive(false);
+
+        bgSteps.SetActive(true);
+        bgStepsSelected.SetActive(false);
     }
 
-    public void No ()
+    public void No()
     {
         Debug.Log("Continue without blueprint");
         panelBlueprint.SetActive(false);

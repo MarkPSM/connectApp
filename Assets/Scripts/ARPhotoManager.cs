@@ -7,7 +7,8 @@ using TMPro;
 public class ARPhotoManager : MonoBehaviour
 {
     [Header("UI Principal")]
-    public TextMeshProUGUI title;
+    public GameObject title1;
+    public GameObject title2;
     //public GameObject canvasCameraUI;
     //public GameObject canvasPreviewUI;
     //public GameObject iconStampPanel;
@@ -53,14 +54,23 @@ public class ARPhotoManager : MonoBehaviour
 
         buttonConfirm.onClick.AddListener(OnConfirmClicked);
         buttonBack.onClick.AddListener(OnBackClicked);
+
+        title1.SetActive(true);
+        title2.SetActive(false);
     }
 
     private void FixedUpdate()
     {
         if (canvasManager.currentStep == 1)
-            title.text = "Tire foto da planta baixa";
+        {
+            title1.SetActive(true);
+            title2.SetActive(false);
+        }
         else
-            title.text = "Tire foto do ambiente";
+        {
+            title1.SetActive(false);
+            title2.SetActive(true);
+        }
 
         if (buttonConfirm.interactable == false || buttonBack.interactable == false)
         {
@@ -95,7 +105,7 @@ public class ARPhotoManager : MonoBehaviour
 
         yield return new WaitForEndOfFrame();
 
-        if(canvasManager.currentStep == 1)
+        if (canvasManager.currentStep == 1)
         {
             canvasManager.panelPreview.SetActive(true);
             canvasManager.panelMap.SetActive(true);
@@ -240,8 +250,9 @@ public class ARPhotoManager : MonoBehaviour
         //    iconStampPanel.SetActive(false);
 
         //ShowFeedback("Foto descartada");
-        
+
         canvasManager.panelPreview.SetActive(false);
+        canvasManager.panelMap.SetActive(false);
     }
 
 
@@ -317,7 +328,7 @@ public class ARPhotoManager : MonoBehaviour
     public void Continue()
     {
         if (canvasManager.currentStep == 1 && canvasManager.hasBlueprint == true)
-        { 
+        {
             canvasManager.panelPreview.SetActive(false);
             canvasManager.panelPicture.SetActive(false);
             canvasManager.panelCPDPathYes.SetActive(true);

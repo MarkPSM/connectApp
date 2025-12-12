@@ -7,6 +7,10 @@ public class Progress : MonoBehaviour
 
     public TextMeshProUGUI stepNum;
 
+    public GameObject btnChatIcon;
+    public GameObject btnStepIcon;
+    public GameObject newFunctionObject;
+
     private void Start()
     {
         canvasManager = FindFirstObjectByType<CanvasManager>();
@@ -21,7 +25,20 @@ public class Progress : MonoBehaviour
     {
         canvasManager.OpenSteps();
 
-        if(canvasManager.currentStep == 1 && canvasManager.hasBlueprint == true)
+        if (canvasManager.btnChat.activeSelf == false)
+            canvasManager.btnChat.SetActive(true);
+
+        if (canvasManager.btnSteps.activeSelf == false)
+            canvasManager.btnSteps.SetActive(true);
+
+        if (btnChatIcon.activeSelf == true)
+            btnChatIcon.SetActive(false);
+        if (btnStepIcon.activeSelf == true)
+            btnStepIcon.SetActive(false);
+        if (newFunctionObject.activeSelf == true)
+            newFunctionObject.SetActive(false);
+
+        if (canvasManager.currentStep == 1 && canvasManager.hasBlueprint == true)
         {
             canvasManager.panelCPDPathYes.SetActive(true);
             canvasManager.currentStep++;
@@ -38,7 +55,7 @@ public class Progress : MonoBehaviour
             Debug.Log("Estágio atual: " + canvasManager.currentStep + "; CPD Path activated");
             return;
         }
-        else if(canvasManager.currentStep == 2 && canvasManager.hasBlueprint == true)
+        else if (canvasManager.currentStep == 2 && canvasManager.hasBlueprint == true)
         {
             canvasManager.panelTutorial.SetActive(true);
             canvasManager.panelMap.SetActive(false);
@@ -60,7 +77,7 @@ public class Progress : MonoBehaviour
             Debug.Log("Estágio atual: " + canvasManager.currentStep + "; Picture Area activated");
             return;
         }
-        else if(canvasManager.currentStep == 3 && canvasManager.hasBlueprint == true)
+        else if (canvasManager.currentStep == 3 && canvasManager.hasBlueprint == true)
         {
             canvasManager.currentStep++;
             canvasManager.panelProgress.SetActive(false);

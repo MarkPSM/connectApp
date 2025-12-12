@@ -7,7 +7,8 @@ using UnityEngine.UI;
 public class CPDPin : MonoBehaviour
 {
     [Header("Title")]
-    public TextMeshProUGUI title;
+    public GameObject title1;
+    public GameObject title2;
 
     [Header("Raycast")]
     public GraphicRaycaster raycaster;
@@ -42,7 +43,8 @@ public class CPDPin : MonoBehaviour
         btnContinuar.SetActive(false);
 
         currentStep = 0;
-        title.text = "Clique nas salas de interesse, (da porta de entrada até o CPD)";
+        title1.SetActive(true);
+        title2.SetActive(false);
     }
 
     private void FixedUpdate()
@@ -61,8 +63,8 @@ public class CPDPin : MonoBehaviour
                 txtPinCount.text = pinCount.ToString();
                 Instantiate(pinPrefab, new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0), Quaternion.identity, pinPrefab.transform.parent);
                 pinPrefab.transform.SetParent(pinsFather.transform, worldPositionStays: true);
-                
-                if(btnContinuar.activeSelf == false)
+
+                if (btnContinuar.activeSelf == false)
                 {
                     btnContinuar.SetActive(true);
                 }
@@ -117,10 +119,10 @@ public class CPDPin : MonoBehaviour
 
     private GameObject UIObjectUnderMouse()
     {
-            PointerEventData eventData = new PointerEventData(eventSystem);
-            eventData.position = Input.mousePosition;
-            List<RaycastResult> results = new List<RaycastResult>();
-            raycaster.Raycast(eventData, results);
+        PointerEventData eventData = new PointerEventData(eventSystem);
+        eventData.position = Input.mousePosition;
+        List<RaycastResult> results = new List<RaycastResult>();
+        raycaster.Raycast(eventData, results);
 
         foreach (var r in results)
         {
@@ -137,7 +139,8 @@ public class CPDPin : MonoBehaviour
     {
         currentStep = 1;
         btnContinuar.SetActive(false);
-        title.text = "Clique no pin do CPD";
+        title2.SetActive(true);
+        title1.SetActive(false);
     }
 
     public void Conclude()
